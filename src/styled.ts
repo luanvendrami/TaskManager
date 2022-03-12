@@ -14,12 +14,28 @@ left: 0;
 
 display: flex;
 align-items: center;
+text-align: center;
 justify-content: center;
+
+
+h4{
+    font-size: 0.7rem;
+
+    &:hover{
+    cursor: default;
+}
+}
+
+h3{
+    &:hover{
+    cursor: default;
+}
+}
 }
 
 .react-modal-content{
 width: 100%;
-margin-bottom: 10rem;
+margin-bottom: 12rem;
 max-width: 300px;
 background: #FFF;
 padding: 6rem;
