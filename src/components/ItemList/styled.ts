@@ -4,9 +4,8 @@ type ContainerProps = {
   done: boolean;
 };
 
-export const Container = styled.div(
-  ({ done }: ContainerProps) =>
-    `
+
+export const Container = styled.div(({ done }: ContainerProps) =>`
     display: flex;
     background-color: #20212C;
     padding: 10px;
@@ -14,7 +13,7 @@ export const Container = styled.div(
     margin-bottom: 10px;
     align-items: center;
 
-    input{
+    .inputPrincipal{
         width: 25px;
         height: 25px;
         margin-right: 5px;
@@ -29,7 +28,7 @@ export const Container = styled.div(
         color: ${done ? "#cc0000" : "#CCC"};
     }
 
-    button{
+    .buttonDelete{
       color: white;
       background: ${done ? "#cc0000" : "#CCC "};
       border-radius: 0.25rem;
@@ -46,22 +45,63 @@ export const Container = styled.div(
       }
     }
 
+    .buttonEdit{
+      color: white;
+      background: ${done ? "#cc8400 " : "#CCC "};
+      border-radius: 0.25rem;
+      border: 0;
+      font-size: 1.3rem;
+      margin-top: auto;
+      font-weight: 400;
+      transition: filter 0.2s;
+  
+      &:hover {
+        cursor:${done ? "pointer" : "auto"};
+        filter: ${done ? "brightness(0.9)" : "none"};
+      }
+    }
+
 `
 );
 
-export const DivFlutuante = styled.div`
+export const DivFlutuanteDelete = styled.div`
   height: 30px;
   width: 60px;
   position: fixed;
   left: 70%;
 `;
 
-export const Button = styled.button`
+export const DivFlutuanteEdit = styled.div`
+  height: 30px;
+  width: 60px;
+  position: fixed;
+  left: 66%;
+
+`;
+
+export const InputEdit = styled.input`
+    width: 93%;
+    border: 1px solid #555;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    align-items: center; 
+    font-size: 18px;
+    flex: 1;
+    outline: none;
+`;
+
+
+type EditButtonProps = {
+  edit: number;
+};
+
+export const Button = styled.button(({edit}:EditButtonProps ) => `
   width: 100%;
   padding: 0 1.5rem;
   height: 4rem;
-  background: red;
-  color: #CCC;
+  background: ${edit === 0 ? "green" : "red"};
+  color: #ccc;
   border-radius: 0.25rem;
   border: 0;
   font-size: 1rem;
@@ -71,6 +111,9 @@ export const Button = styled.button`
   transition: filter 0.2s;
 
   &:hover {
+    cursor: pointer;
     filter: brightness(0.9);
   }
-`;
+`);
+  
+
