@@ -76,7 +76,6 @@ export const DivFlutuanteEdit = styled.div`
   width: 60px;
   position: fixed;
   left: 66%;
-
 `;
 
 export const InputEdit = styled.input`
