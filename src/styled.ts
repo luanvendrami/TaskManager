@@ -3,6 +3,8 @@ import styled, { createGlobalStyle } from "styled-components";
 export const GlobalStyle = createGlobalStyle`
 :root{
 
+    
+
     .react-modal-overlay{
 background: rgba(0 , 0, 0, 0.5);
 
@@ -57,4 +59,7 @@ transition: filtro 0.2s;
     filter: brightness(0.8);
 }
 }
+
+
+
 }`;
