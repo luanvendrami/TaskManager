@@ -8,14 +8,16 @@ type Props = {
   item: IDados;
   deleteTarefa: (id: number) => void;
   updateTarefa: (id: number, name: string) => void;
+  updateTarefaFinalizada:  (id:number, done: boolean) => void;
 };
 
-export function ListItem({ item, deleteTarefa, updateTarefa }: Props) {
+export function ListItem({ item, deleteTarefa, updateTarefa, updateTarefaFinalizada }: Props) {
   const [isChecked, setIsChecked] = useState(Boolean);
   const [isEdit, setIsEdit] = useState(0);
   const [buttonDisabled, setButtonDisabled] = useState(Boolean);
   const [valueModal, setValueModal] = useState(false);
   const [newName, setNewName] = useState('')
+  const [newDone, setDone] = useState(Boolean);
 
   function handleModalOpen() {
     setValueModal(true);
@@ -49,18 +51,31 @@ export function ListItem({ item, deleteTarefa, updateTarefa }: Props) {
     }
   }
 
+  async function validaUpdateFinalizada(){
+    if (isChecked === true){
+      setDone(true)
+      updateTarefaFinalizada(item.id, newDone)
+      setButtonDisabled(true)
+    } 
+  }
+
+  useEffect(() => {
+    validaUpdateFinalizada()
+  },[newDone,])
+
 
   return (
-    <C.Container done={isChecked}>
+    <C.Container done={isChecked} finalizada={item.done}>
       <input
         type="checkbox"
         className="inputPrincipal"
         checked={isChecked}
+        disabled={item.done ? true : false}
         onChange={(e) => setIsChecked(e.target.checked)}
       />
       <label>{item.name}</label>
 
-      <C.DivFlutuanteDelete>
+      <C.DivDelete>
         <button
           disabled={buttonDisabled}
           onClick={() => validaDelete(isChecked)}
@@ -69,8 +84,8 @@ export function ListItem({ item, deleteTarefa, updateTarefa }: Props) {
         >
           Deletar
         </button>
-      </C.DivFlutuanteDelete>
-      <C.DivFlutuanteEdit>
+      </C.DivDelete>
+      <C.DivEdit>
         <button
           disabled={buttonDisabled}
           onClick={() => validaUpdate(isChecked)}
@@ -79,7 +94,16 @@ export function ListItem({ item, deleteTarefa, updateTarefa }: Props) {
         >
           Editar
         </button>
-      </C.DivFlutuanteEdit>
+      </C.DivEdit>
+      <C.DivFinalizada>
+      <button
+          disabled={buttonDisabled}
+          onClick={() => validaUpdateFinalizada()}
+          className="buttonFinalizado"
+        >
+          Finalizada
+        </button>
+      </C.DivFinalizada>
       {isEdit === 0 ? (
         <IsModal
           isOpen={valueModal}
