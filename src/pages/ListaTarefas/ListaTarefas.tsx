@@ -18,15 +18,14 @@ import { useNavigate } from "react-router-dom";
 
 export function ListaTarefas() {
   const [newName, setNewName] = useState("");
-  const [newDone, setDone] = useState(false);
+  const [newDone, setDone] = useState(Boolean);
   const [list, setList] = useState([]);
   const tarefasCollectionRef = collection(db, "tarefas");
-  const [valueDelete, setValueDelete] = useState();
-  const [valueUpdate, setValueUpdate] = useState();
+  // const [valueDelete, setValueDelete] = useState();
+  // const [valueUpdate, setValueUpdate] = useState();
   const navigation = useNavigate();
 
   const createTarefa = async () => {
-    setDone(false);
     await addDoc(tarefasCollectionRef, { name: newName, done: newDone })
       .then(() => getTarefas())
       .catch((error) => console.log(error));
@@ -35,7 +34,7 @@ export function ListaTarefas() {
 
   const deleteTarefa = async (id: any) => {
     const tarefaDoc = doc(db, "tarefas", id);
-    setValueDelete(id);
+    // setValueDelete(id);
     await deleteDoc(tarefaDoc)
       .then(() => getTarefas())
       .catch((error) => console.log(error));
@@ -44,7 +43,16 @@ export function ListaTarefas() {
   const updateTarefa = async (id: any, name: string) => {
     const tarefaDoc = doc(db, "tarefas", id);
     const newFields = { name: name };
-    setValueUpdate(id);
+    // setValueUpdate(id);
+    await updateDoc(tarefaDoc, newFields)
+      .then(() => getTarefas())
+      .catch((error) => console.log(error));
+  };
+
+  const updateTarefaFinalizada = async (id: any, done: boolean) => {
+    const tarefaDoc = doc(db, "tarefas", id);
+    const newFields = { done: done };
+    // setValueUpdate(id);
     await updateDoc(tarefaDoc, newFields)
       .then(() => getTarefas())
       .catch((error) => console.log(error));
@@ -67,23 +75,20 @@ export function ListaTarefas() {
     <C.Container>
       <C.Area>
         <C.Header>
-          Lista de Tarefas
-          <C.DivFlutuante>         
-          <button
+        <button
           type="button"
           onClick={() => RetornarHome()} 
           className="react-button-voltar"
         >
           <img src={voltar} alt="Voltar Home" />
         </button>
-
-          </C.DivFlutuante>
+          Lista de Tarefas        
           </C.Header>
         <AddArea>
           <div className="image">✚</div>
           <input
             type="text"
-            maxLength={100}
+            maxLength={85}
             placeholder="Adicione uma tarefa"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
@@ -96,9 +101,17 @@ export function ListaTarefas() {
             item={item}
             deleteTarefa={deleteTarefa}
             updateTarefa={updateTarefa}
+            updateTarefaFinalizada={updateTarefaFinalizada}
           />
         ))}
+        
       </C.Area>
+      <C.BoxInformacoes>
+            <h3>Quantas finalizadas:
+              Quantas em andamento:
+              
+            </h3>
+      </C.BoxInformacoes>
     </C.Container>
   );
 }
