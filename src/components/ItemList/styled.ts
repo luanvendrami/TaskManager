@@ -2,10 +2,11 @@ import styled from "styled-components";
 
 type ContainerProps = {
   done: boolean;
+  finalizada: boolean;
 };
 
 
-export const Container = styled.div(({ done }: ContainerProps) =>`
+export const Container = styled.div(({ done, finalizada }: ContainerProps) =>`
     display: flex;
     background-color: #20212C;
     padding: 10px;
@@ -19,7 +20,7 @@ export const Container = styled.div(({ done }: ContainerProps) =>`
         margin-right: 5px;
 
         &:hover {
-          cursor: pointer;
+          cursor: ${finalizada ? "auto":"pointer"};
 
         }
     }
@@ -40,14 +41,14 @@ export const Container = styled.div(({ done }: ContainerProps) =>`
       transition: filter 0.2s;
   
       &:hover {
-        cursor:${done ? "pointer" : "auto"};
-        filter: ${done ? "brightness(0.9)" : "none"};
+        cursor:${finalizada ? "auto"  : "pointer" || done ? "pointer" : "auto"};
+        filter: ${finalizada ? "none" : "brightness(0.9)" || done ? "brightness(0.9)" : "none"};
       }
     }
 
     .buttonEdit{
       color: white;
-      background: ${done ? "#cc8400 " : "#CCC "};
+      background: ${done ? "#cc8400 " : "#CCC"};
       border-radius: 0.25rem;
       border: 0;
       font-size: 1.3rem;
@@ -56,26 +57,48 @@ export const Container = styled.div(({ done }: ContainerProps) =>`
       transition: filter 0.2s;
   
       &:hover {
-        cursor:${done ? "pointer" : "auto"};
-        filter: ${done ? "brightness(0.9)" : "none"};
+        cursor:${finalizada ? "auto"  : "pointer" || done ? "pointer" : "auto"};
+        filter: ${finalizada ? "none" : "brightness(0.9)" || done ? "brightness(0.9)" : "none"};
+      }
+    }
+    .buttonFinalizado{
+      color: white;
+      background: ${finalizada ? "#555fed"  : "#CCC"};
+      border-radius: 0.25rem;
+      border: 0;
+      font-size: 1.3rem;
+      margin-top: auto;
+      font-weight: 400;
+      transition: filter 0.2s;
+  
+      &:hover {
+        cursor:${finalizada ? "auto"  : "pointer" && done ? "pointer" : "auto"};
+        filter: ${finalizada ? "none" : "brightness(0.9)" && done ? "brightness(0.9)" : "none"};
       }
     }
 
 `
 );
 
-export const DivFlutuanteDelete = styled.div`
+export const DivDelete = styled.div`
   height: 30px;
   width: 60px;
-  position: fixed;
-  left: 70%;
+  position: absolute;
+  left: 71%;
 `;
 
-export const DivFlutuanteEdit = styled.div`
+export const DivEdit = styled.div`
   height: 30px;
   width: 60px;
-  position: fixed;
-  left: 66%;
+  position: absolute;
+  left: 67%;
+`;
+
+export const DivFinalizada = styled.div`
+  height: 30px;
+  width: 60px;
+  position: absolute;
+  left: 60.8%;
 `;
 
 export const InputEdit = styled.input`

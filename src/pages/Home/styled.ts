@@ -8,75 +8,93 @@ export const Container = styled.div`
   text-align: center;
 
 
-.button-80 {
-  background: #262833;
-  backface-visibility: hidden;
-  border-radius: .375rem;
-  border-style: solid;
-  border-width: .125rem;
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: #FFF;
-  cursor: pointer;
-  display: inline-block;
-  font-family: Circular,Helvetica,sans-serif;
-  font-size: 1.125rem;
-  font-weight: 700;
-  letter-spacing: -.01em;
-  line-height: 1.3;
-  padding: .875rem 1.125rem;
-  position: relative;
-  text-align: left;
-  text-decoration: none;
-  transform: translateZ(0) scale(1);
-  transition: transform .2s;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  margin-top: 3rem;
-
 }
 
-.button-80:not(:disabled):hover {
-  transform: scale(1.05);
+body {
+  background: #272727;
+  font-family: "Montserrat", sans-serif;
 }
 
-.button-80:not(:disabled):hover:active {
-  transform: scale(1.05) translateY(.125rem);
-}
-
-.button-80:focus {
-  outline: 0 solid transparent;
-}
-
-.button-80:focus:before {
-  content: "";
-  left: calc(-1*.375rem);
-  pointer-events: none;
+.navMenu {
   position: absolute;
-  top: calc(-1*.375rem);
-  transition: border-radius;
-  user-select: none;
-}
-
-.button-80:focus:not(:focus-visible) {
-  outline: 0 solid transparent;
-}
-
-.button-80:focus:not(:focus-visible):before {
-  border-width: 0;
-}
-
-.button-80:not(:disabled):active {
-  transform: translateY(.125rem);
-}
-
-`;
-
-export const Header = styled.h1`
-    margin: 0;
+  top: 5%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  margin: 0;
     padding: 0;
     color: #fff;
     text-align: center;
     border-bottom: 1px solid #444;
     padding-bottom: 20px;
+}
+
+.navMenu a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: inline-block;
+  width: 130px;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.navMenu a:hover {
+  color: #797A81;
+}
+
+.navMenu .dot {
+  width: 6px;
+  height: 6px;
+  background: #797A81;
+  border-radius: 50%;
+  opacity: 0;
+  -webkit-transform: translateX(30px);
+  transform: translateX(30px);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.navMenu a:nth-child(1):hover ~ .dot {
+  -webkit-transform: translateX(30px);
+  transform: translateX(30px);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.navMenu a:nth-child(2):hover ~ .dot {
+  -webkit-transform: translateX(110px);
+  transform: translateX(110px);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.navMenu a:nth-child(3):hover ~ .dot {
+  -webkit-transform: translateX(200px);
+  transform: translateX(200px);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.navMenu a:nth-child(4):hover ~ .dot {
+  -webkit-transform: translateX(285px);
+  transform: translateX(285px);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  opacity: 1;
+}
+
+
+
 `;
