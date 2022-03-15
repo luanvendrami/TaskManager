@@ -44,9 +44,7 @@ export const Header = styled.h1`
 
 `;
 
-export const ButtonNavigation = styled.button`
-
-
+export const ButtonNavigation = styled.button`  
   color: white;
   background: #ccc;
   border-radius: 0.25rem;

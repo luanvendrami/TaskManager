@@ -41,14 +41,14 @@ export const Container = styled.div(({ done, finalizada }: ContainerProps) =>`
       transition: filter 0.2s;
   
       &:hover {
-        cursor:${finalizada ? "auto"  : "pointer" || done ? "pointer" : "auto"};
-        filter: ${finalizada ? "none" : "brightness(0.9)" || done ? "brightness(0.9)" : "none"};
+        cursor:${done ? "pointer" : "auto" && finalizada ? "auto"  : "pointer"};
+        filter: ${finalizada ? "none" : "brightness(0.9)" && done ? "brightness(0.9)" : "none"};
       }
     }
 
     .buttonEdit{
       color: white;
-      background: ${done ? "#cc8400 " : "#CCC"};
+      background: ${finalizada ? "#CCC" : "#cc8400" && done ? "#cc8400 " : "#CCC" };
       border-radius: 0.25rem;
       border: 0;
       font-size: 1.3rem;
@@ -57,10 +57,13 @@ export const Container = styled.div(({ done, finalizada }: ContainerProps) =>`
       transition: filter 0.2s;
   
       &:hover {
-        cursor:${finalizada ? "auto"  : "pointer" || done ? "pointer" : "auto"};
-        filter: ${finalizada ? "none" : "brightness(0.9)" || done ? "brightness(0.9)" : "none"};
+        cursor:${finalizada ? "auto"  : "pointer" && done ? "pointer" : "auto"};
+        filter: ${finalizada ? "none" : "brightness(0.9)" && done ? "brightness(0.9)" : "none"};
       }
     }
+
+
+    
     .buttonFinalizado{
       color: white;
       background: ${finalizada ? "#555fed"  : "#CCC"};
@@ -76,9 +79,10 @@ export const Container = styled.div(({ done, finalizada }: ContainerProps) =>`
         filter: ${finalizada ? "none" : "brightness(0.9)" && done ? "brightness(0.9)" : "none"};
       }
     }
-
 `
 );
+
+
 
 export const DivDelete = styled.div`
   height: 30px;
@@ -98,8 +102,9 @@ export const DivFinalizada = styled.div`
   height: 30px;
   width: 60px;
   position: absolute;
-  left: 60.8%;
+  left: 61.7%;
 `;
+
 
 export const InputEdit = styled.input`
     width: 93%;
@@ -122,7 +127,7 @@ export const Button = styled.button(({edit}:EditButtonProps ) => `
   width: 100%;
   padding: 0 1.5rem;
   height: 4rem;
-  background: ${edit === 0 ? "green" : "red"};
+  background: ${edit === 0 ? "green" : edit === 1 ? "red" : "#555fed"};
   color: #ccc;
   border-radius: 0.25rem;
   border: 0;

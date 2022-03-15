@@ -3,7 +3,7 @@ import styled, { createGlobalStyle } from "styled-components";
 export const GlobalStyle = createGlobalStyle`
 :root{
 
-    
+    --red: #E52E4D;
 
     .react-modal-overlay{
 background: rgba(0 , 0, 0, 0.5);
@@ -26,6 +26,10 @@ h4{
     &:hover{
     cursor: default;
 }
+}
+
+.typeColorH4Red{
+    color: var(--red)
 }
 
 h3{
