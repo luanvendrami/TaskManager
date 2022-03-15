@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { IDados } from "../../interface/IDados";
-import api from "../../service/api";
-import { IsModal } from "../Modal";
+import { ButtonGrid } from "../ButtonGrid";
+import { StepDelete } from "../Modal/Steps/StepDelete";
+import { StepEdit } from "../Modal/Steps/StepEdit";
+import { StepFinaliza } from "../Modal/Steps/StepFinaliza";
 import * as C from "./styled";
 
 type Props = {
@@ -51,18 +53,22 @@ export function ListItem({ item, deleteTarefa, updateTarefa, updateTarefaFinaliz
     }
   }
 
-  async function validaUpdateFinalizada(){
+  async function validaUpdateFinalizada(isChecked: boolean){
     if (isChecked === true){
+      handleModalOpen();
+      setIsEdit(2);
+      if(valueModal){
       setDone(true)
       updateTarefaFinalizada(item.id, newDone)
-      setButtonDisabled(true)
+      handleModalClose();
+      }
+      
     } 
   }
 
   useEffect(() => {
-    validaUpdateFinalizada()
-  },[newDone,])
-
+    validaUpdateFinalizada(isChecked)
+  },[newDone])
 
   return (
     <C.Container done={isChecked} finalizada={item.done}>
@@ -70,79 +76,70 @@ export function ListItem({ item, deleteTarefa, updateTarefa, updateTarefaFinaliz
         type="checkbox"
         className="inputPrincipal"
         checked={isChecked}
-        disabled={item.done ? true : false}
         onChange={(e) => setIsChecked(e.target.checked)}
       />
       <label>{item.name}</label>
 
       <C.DivDelete>
-        <button
-          disabled={buttonDisabled}
+        <ButtonGrid
+          disabled={false}
           onClick={() => validaDelete(isChecked)}
           className="buttonDelete"
-          value={isEdit}
+          isEdit={isEdit}
+          isChecked={isChecked}
         >
           Deletar
-        </button>
+        </ButtonGrid>
       </C.DivDelete>
       <C.DivEdit>
-        <button
-          disabled={buttonDisabled}
-          onClick={() => validaUpdate(isChecked)}
-          className="buttonEdit"
-          value={isEdit}
+        <ButtonGrid
+        disabled={item.done ? true :false}
+        onClick={() => validaUpdate(isChecked)}
+        className="buttonEdit"
+        isEdit={isEdit}
+        isChecked={isChecked}
         >
-          Editar
-        </button>
+        Editar
+        </ButtonGrid> 
       </C.DivEdit>
       <C.DivFinalizada>
-      <button
-          disabled={buttonDisabled}
-          onClick={() => validaUpdateFinalizada()}
-          className="buttonFinalizado"
+        <ButtonGrid
+        disabled={item.done ? true :false}
+        onClick={() => validaUpdateFinalizada(isChecked)}
+        className="buttonFinalizado"
+        isEdit={isEdit}
+        isChecked={isChecked}
         >
-          Finalizada
-        </button>
+        Finalizar
+        </ButtonGrid>
       </C.DivFinalizada>
-      {isEdit === 0 ? (
-        <IsModal
-          isOpen={valueModal}
-          onRequestClose={handleModalClose}
-          overlayClassName="react-modal-overlay"
-          className="react-modal-content"
-        >
-          <h3>Você deseja Editar está tarefa?</h3>
-          <h4 className="h4new">Digite a nova descrição da tarefa:</h4>
-          <C.InputEdit
-            type="text"
-            checked={isChecked}
-            onChange={(e) => setNewName(e.target.value)}
+      {isEdit === 0 ?(
+          <StepEdit
+          valueModal={valueModal} 
+          handleModalClose={handleModalClose}
+          setNewName={setNewName}
+          validaUpdate={() => validaUpdate(isChecked)}
+          isEdit={isEdit}
+          isChecked={isChecked}
           />
-          <C.Button
-            edit={isEdit}
-            className="buttonStyle"
-            onClick={() => validaUpdate(isChecked)}
-          >
-            Confirmar
-          </C.Button>
-        </IsModal>
+      ) : isEdit === 1 ? (
+        <StepDelete
+          valueModal={valueModal} 
+          handleModalClose={handleModalClose}
+          validaDelete={() => validaDelete(isChecked)}
+          isEdit={isEdit}
+          isChecked={isChecked}
+        />
       ) : (
-        <IsModal
-          isOpen={valueModal}
-          onRequestClose={handleModalClose}
-          overlayClassName="react-modal-overlay"
-          className="react-modal-content"
-        >
-          <h3>Você deseja deletar está tarefa?</h3>
-          <C.Button
-          edit={isEdit}
-            className="buttonStyle"
-            onClick={() => validaDelete(isChecked)}
-          >
-            Confirmar
-          </C.Button>
-        </IsModal>
+        <StepFinaliza
+        valueModal={valueModal} 
+        handleModalClose={handleModalClose}
+        validaUpdateFinalizada={() => validaUpdateFinalizada(isChecked)}
+        isEdit={isEdit}
+        isChecked={isChecked}
+        />
       )}
+      
     </C.Container>
   );
 }
