@@ -13,20 +13,21 @@ import {
   doc,
   deleteDoc,
   updateDoc,
+  endAt,
 } from "@firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 export function ListaTarefas() {
   const [newName, setNewName] = useState("");
   const [newDone, setDone] = useState(Boolean);
+
   const [list, setList] = useState([]);
   const tarefasCollectionRef = collection(db, "tarefas");
-  // const [valueDelete, setValueDelete] = useState();
-  // const [valueUpdate, setValueUpdate] = useState();
+
   const navigation = useNavigate();
 
   const createTarefa = async () => {
-    await addDoc(tarefasCollectionRef, { name: newName, done: newDone })
+    await addDoc(tarefasCollectionRef, { name: newName, done: newDone})
       .then(() => getTarefas())
       .catch((error) => console.log(error));
     setNewName("");
@@ -34,16 +35,15 @@ export function ListaTarefas() {
 
   const deleteTarefa = async (id: any) => {
     const tarefaDoc = doc(db, "tarefas", id);
-    // setValueDelete(id);
     await deleteDoc(tarefaDoc)
       .then(() => getTarefas())
       .catch((error) => console.log(error));
   };
-
+  
+  
   const updateTarefa = async (id: any, name: string) => {
     const tarefaDoc = doc(db, "tarefas", id);
     const newFields = { name: name };
-    // setValueUpdate(id);
     await updateDoc(tarefaDoc, newFields)
       .then(() => getTarefas())
       .catch((error) => console.log(error));
@@ -52,7 +52,6 @@ export function ListaTarefas() {
   const updateTarefaFinalizada = async (id: any, done: boolean) => {
     const tarefaDoc = doc(db, "tarefas", id);
     const newFields = { done: done };
-    // setValueUpdate(id);
     await updateDoc(tarefaDoc, newFields)
       .then(() => getTarefas())
       .catch((error) => console.log(error));
