@@ -27,7 +27,7 @@ export function ListaTarefas() {
   const navigation = useNavigate();
 
   const createTarefa = async () => {
-    await addDoc(tarefasCollectionRef, { name: newName, done: newDone})
+    await addDoc(tarefasCollectionRef, { name: newName, done: newDone })
       .then(() => getTarefas())
       .catch((error) => console.log(error));
     setNewName("");
@@ -39,8 +39,7 @@ export function ListaTarefas() {
       .then(() => getTarefas())
       .catch((error) => console.log(error));
   };
-  
-  
+
   const updateTarefa = async (id: any, name: string) => {
     const tarefaDoc = doc(db, "tarefas", id);
     const newFields = { name: name };
@@ -74,15 +73,15 @@ export function ListaTarefas() {
     <C.Container>
       <C.Area>
         <C.Header>
-        <button
-          type="button"
-          onClick={() => RetornarHome()} 
-          className="react-button-voltar"
-        >
-          <img src={voltar} alt="Voltar Home" />
-        </button>
-          Lista de Tarefas        
-          </C.Header>
+          <button
+            type="button"
+            onClick={() => RetornarHome()}
+            className="react-button-voltar"
+          >
+            <img src={voltar} alt="Voltar Home" />
+          </button>
+          Lista de Tarefas
+        </C.Header>
         <AddArea>
           <div className="image">✚</div>
           <input
@@ -95,21 +94,11 @@ export function ListaTarefas() {
           <button onClick={() => createTarefa()}>Adicionar</button>
         </AddArea>
         {list.map((item, index) => (
-          <ListItem
-            key={index}
-            item={item}
-            deleteTarefa={deleteTarefa}
-            updateTarefa={updateTarefa}
-            updateTarefaFinalizada={updateTarefaFinalizada}
-          />
+          <ListItem key={index} item={item} deleteTarefa={deleteTarefa} />
         ))}
-        
       </C.Area>
       <C.BoxInformacoes>
-            <h3>Quantas finalizadas:
-              Quantas em andamento:
-              
-            </h3>
+        <h3>Quantas finalizadas: Quantas em andamento:</h3>
       </C.BoxInformacoes>
     </C.Container>
   );

@@ -9,17 +9,12 @@ import * as C from "./styled";
 type Props = {
   item: IDados;
   deleteTarefa: (id: number) => void;
-  updateTarefa: (id: number, name: string) => void;
-  updateTarefaFinalizada:  (id:number, done: boolean) => void;
 };
 
-export function ListItem({ item, deleteTarefa, updateTarefa, updateTarefaFinalizada }: Props) {
+export function ListItem({ item, deleteTarefa }: Props) {
   const [isChecked, setIsChecked] = useState(Boolean);
   const [isEdit, setIsEdit] = useState(0);
-  const [buttonDisabled, setButtonDisabled] = useState(Boolean);
   const [valueModal, setValueModal] = useState(false);
-  const [newName, setNewName] = useState('')
-  const [newDone, setDone] = useState(Boolean);
 
   function handleModalOpen() {
     setValueModal(true);
@@ -40,35 +35,6 @@ export function ListItem({ item, deleteTarefa, updateTarefa, updateTarefaFinaliz
       }
     }
   }
-
-  async function validaUpdate(isChecked: boolean) {
-    if (isChecked === true) {
-      handleModalOpen();
-      setIsEdit(0);
-      if(valueModal){
-        updateTarefa(item.id, newName);
-        handleModalClose();
-        setIsChecked(false);
-      } 
-    }
-  }
-
-  async function validaUpdateFinalizada(isChecked: boolean){
-    if (isChecked === true){
-      handleModalOpen();
-      setIsEdit(2);
-      if(valueModal){
-      setDone(true)
-      updateTarefaFinalizada(item.id, newDone)
-      handleModalClose();
-      }
-      
-    } 
-  }
-
-  useEffect(() => {
-    validaUpdateFinalizada(isChecked)
-  },[newDone])
 
   return (
     <C.Container done={isChecked} finalizada={item.done}>
@@ -91,55 +57,13 @@ export function ListItem({ item, deleteTarefa, updateTarefa, updateTarefaFinaliz
           Deletar
         </ButtonGrid>
       </C.DivDelete>
-      <C.DivEdit>
-        <ButtonGrid
-        disabled={item.done ? true :false}
-        onClick={() => validaUpdate(isChecked)}
-        className="buttonEdit"
-        isEdit={isEdit}
-        isChecked={isChecked}
-        >
-        Editar
-        </ButtonGrid> 
-      </C.DivEdit>
-      <C.DivFinalizada>
-        <ButtonGrid
-        disabled={item.done ? true :false}
-        onClick={() => validaUpdateFinalizada(isChecked)}
-        className="buttonFinalizado"
-        isEdit={isEdit}
-        isChecked={isChecked}
-        >
-        Finalizar
-        </ButtonGrid>
-      </C.DivFinalizada>
-      {isEdit === 0 ?(
-          <StepEdit
-          valueModal={valueModal} 
-          handleModalClose={handleModalClose}
-          setNewName={setNewName}
-          validaUpdate={() => validaUpdate(isChecked)}
-          isEdit={isEdit}
-          isChecked={isChecked}
-          />
-      ) : isEdit === 1 ? (
-        <StepDelete
-          valueModal={valueModal} 
-          handleModalClose={handleModalClose}
-          validaDelete={() => validaDelete(isChecked)}
-          isEdit={isEdit}
-          isChecked={isChecked}
-        />
-      ) : (
-        <StepFinaliza
-        valueModal={valueModal} 
+      <StepDelete
+        valueModal={valueModal}
         handleModalClose={handleModalClose}
-        validaUpdateFinalizada={() => validaUpdateFinalizada(isChecked)}
+        validaDelete={() => validaDelete(isChecked)}
         isEdit={isEdit}
         isChecked={isChecked}
-        />
-      )}
-      
+      />
     </C.Container>
   );
 }
