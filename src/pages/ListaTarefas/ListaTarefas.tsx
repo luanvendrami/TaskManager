@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AddArea } from "../../components/AddArea";
-import { ListItem } from "../../components/ItemList";
+import { ListItem, ListItemMemoized } from "../../components/ItemList";
 import { db } from "../../firebase";
 import * as C from "./styled";
 
@@ -16,21 +16,27 @@ import {
   endAt,
 } from "@firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { ButtonGrid } from "../../components/ButtonGrid";
+import { IDados } from "../../interface/IDados";
+import { IsModal } from "../../components/Modal";
+import { isTemplateExpression } from "typescript";
 
 export function ListaTarefas() {
+  const [list, setList] = useState<IDados[]>([]);
   const [newName, setNewName] = useState("");
-  const [newDone, setDone] = useState(Boolean);
-
-  const [list, setList] = useState([]);
+  const [valueModal, setValueModal] = useState(false);
+  const [valueOnClickButton, setValueOnClickButton] = useState(0);
+  const [listValueOnClick, setListValueOnClick] = useState(0);
   const tarefasCollectionRef = collection(db, "tarefas");
-
   const navigation = useNavigate();
 
   const createTarefa = async () => {
-    await addDoc(tarefasCollectionRef, { name: newName, done: newDone })
-      .then(() => getTarefas())
-      .catch((error) => console.log(error));
-    setNewName("");
+    if (newName !== "") {
+      await addDoc(tarefasCollectionRef, { name: newName })
+        .then(() => getTarefas())
+        .catch((error) => console.log(error));
+      setNewName("");
+    }
   };
 
   const deleteTarefa = async (id: any) => {
@@ -40,30 +46,38 @@ export function ListaTarefas() {
       .catch((error) => console.log(error));
   };
 
-  const updateTarefa = async (id: any, name: string) => {
-    const tarefaDoc = doc(db, "tarefas", id);
-    const newFields = { name: name };
-    await updateDoc(tarefaDoc, newFields)
-      .then(() => getTarefas())
-      .catch((error) => console.log(error));
-  };
-
-  const updateTarefaFinalizada = async (id: any, done: boolean) => {
-    const tarefaDoc = doc(db, "tarefas", id);
-    const newFields = { done: done };
-    await updateDoc(tarefaDoc, newFields)
-      .then(() => getTarefas())
-      .catch((error) => console.log(error));
-  };
-
   const getTarefas = async () => {
     const data = await getDocs(tarefasCollectionRef);
     setList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })) as never[]);
   };
 
-  function RetornarHome() {
-    navigation(-1);
+  function handleModalClose() {
+    setValueModal(false);
   }
+
+  const validaDelete = () => {
+    const lista = list.filter((item) => item.id !== valueOnClickButton);
+    deleteTarefa(valueOnClickButton);
+    setList(lista);
+  };
+
+  const validaDeleteTodas = (lista: IDados[]) => {
+    const filtroLista = lista.filter(
+      (item) => item.id !== listValueOnClick && item.checked === true
+    );
+    filtroLista.forEach((itemRestante) => deleteTarefa(itemRestante.id));
+    setList(filtroLista);
+  };
+
+  const validaCheckBox = (e: any, item?: IDados) => {
+    const listCheckBox = list.map((value) => {
+      if (value.id === item?.id) {
+        return { ...item, checked: e.target.checked };
+      }
+      return value;
+    });
+    setList(listCheckBox);
+  };
 
   useEffect(() => {
     getTarefas();
@@ -75,7 +89,7 @@ export function ListaTarefas() {
         <C.Header>
           <button
             type="button"
-            onClick={() => RetornarHome()}
+            onClick={() => navigation(-1)}
             className="react-button-voltar"
           >
             <img src={voltar} alt="Voltar Home" />
@@ -93,13 +107,41 @@ export function ListaTarefas() {
           />
           <button onClick={() => createTarefa()}>Adicionar</button>
         </AddArea>
+        <button onClick={(e) => validaDeleteTodas(list)}>TESTE</button>
         {list.map((item, index) => (
-          <ListItem key={index} item={item} deleteTarefa={deleteTarefa} />
+          <ListItemMemoized key={index}>
+            <input
+              type="checkbox"
+              className="inputPrincipal"
+              checked={item.checked}
+              onChange={(e) => validaCheckBox(e, item)}
+            />
+            <label>{item.name}</label>
+            <C.DivDelete>
+              <ButtonGrid
+                disabled={false}
+                className="buttonDelete"
+                onClick={() => {
+                  if (item.checked) {
+                    setValueOnClickButton(item.id);
+                    setValueModal(true!);
+                  }
+                }}
+              >
+                Deletar
+              </ButtonGrid>
+            </C.DivDelete>
+            <IsModal
+              isOpen={valueModal}
+              onRequestClose={handleModalClose}
+              functionActions={() => {
+                validaDelete();
+                setValueModal(false);
+              }}
+            />
+          </ListItemMemoized>
         ))}
       </C.Area>
-      <C.BoxInformacoes>
-        <h3>Quantas finalizadas: Quantas em andamento:</h3>
-      </C.BoxInformacoes>
     </C.Container>
   );
 }
