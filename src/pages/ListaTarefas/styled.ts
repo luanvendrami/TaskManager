@@ -20,10 +20,10 @@ export const Header = styled.h1`
   border-bottom: 1px solid #444;
   padding-bottom: 20px;
 
-  button{
-  height: 30px;
-  width: 60px;
-  position: relative;
+  button {
+    height: 30px;
+    width: 60px;
+    position: relative;
   }
 
   .react-button-voltar {
@@ -41,10 +41,16 @@ export const Header = styled.h1`
       filter: brightness(0.8);
     }
   }
-
 `;
 
-export const ButtonNavigation = styled.button`  
+export const DivDelete = styled.div`
+  height: 30px;
+  width: 60px;
+  position: absolute;
+  left: 71%;
+`;
+
+export const ButtonNavigation = styled.button`
   color: white;
   background: #ccc;
   border-radius: 0.25rem;
@@ -61,15 +67,14 @@ export const ButtonNavigation = styled.button`
   }
 `;
 
-
 export const BoxInformacoes = styled.div`
-width: 100%;
-margin-left: 2rem;
-bottom: 60%;
-max-width: 160px;
-background: #20212C;
-box-shadow: 0px 0px 25px #20212C;
-padding: 6rem;
-position: fixed;
-border-radius: 0.24rem;
+  width: 100%;
+  margin-left: 2rem;
+  bottom: 60%;
+  max-width: 160px;
+  background: #20212c;
+  box-shadow: 0px 0px 25px #20212c;
+  padding: 6rem;
+  position: fixed;
+  border-radius: 0.24rem;
 `;
