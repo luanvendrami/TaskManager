@@ -1,5 +1,5 @@
 export interface IDados {
-  id: number;
+  id: string | number;
   name: string;
   done: boolean;
   checked: boolean;
