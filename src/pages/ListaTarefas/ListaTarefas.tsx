@@ -6,67 +6,45 @@ import * as C from "./styled";
 
 import voltar from "../../assets/voltar.svg";
 
-import {
-  collection,
-  getDocs,
-  addDoc,
-  doc,
-  deleteDoc,
-  updateDoc,
-  endAt,
-} from "@firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { ButtonGrid } from "../../components/ButtonGrid";
 import { IDados } from "../../interface/IDados";
 import { IsModal } from "../../components/Modal";
-import { isTemplateExpression } from "typescript";
+import {
+  createTarefa,
+  deleteTarefa,
+  getTarefas,
+} from "../../service/ListaTarefas";
 
 export function ListaTarefas() {
   const [list, setList] = useState<IDados[]>([]);
   const [newName, setNewName] = useState("");
   const [valueModal, setValueModal] = useState(false);
-  const [valueOnClickButton, setValueOnClickButton] = useState(0);
-  const [listValueOnClick, setListValueOnClick] = useState(0);
-  const tarefasCollectionRef = collection(db, "tarefas");
+  const [valueOnClickButton, setValueOnClickButton] = useState<
+    string | number
+  >();
+  const [buttonDeleteView, setButtonDeleteView] = useState<boolean>(false);
   const navigation = useNavigate();
-
-  const createTarefa = async () => {
-    if (newName !== "") {
-      await addDoc(tarefasCollectionRef, { name: newName })
-        .then(() => getTarefas())
-        .catch((error) => console.log(error));
-      setNewName("");
-    }
-  };
-
-  const deleteTarefa = async (id: any) => {
-    const tarefaDoc = doc(db, "tarefas", id);
-    await deleteDoc(tarefaDoc)
-      .then(() => getTarefas())
-      .catch((error) => console.log(error));
-  };
-
-  const getTarefas = async () => {
-    const data = await getDocs(tarefasCollectionRef);
-    setList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })) as never[]);
-  };
 
   function handleModalClose() {
     setValueModal(false);
   }
 
   const validaDelete = () => {
-    const lista = list.filter((item) => item.id !== valueOnClickButton);
-    deleteTarefa(valueOnClickButton);
-    setList(lista);
+    list.filter((item) => item.id !== valueOnClickButton);
+    deleteTarefa(valueOnClickButton, setList);
   };
 
   const validaDeleteTodas = (lista: IDados[]) => {
     const filtroLista = lista.filter(
-      (item) => item.id !== listValueOnClick && item.checked === true
+      (item) => item.id !== 0 && item.checked === true
     );
-    filtroLista.forEach((itemRestante) => deleteTarefa(itemRestante.id));
-    setList(filtroLista);
+    if (filtroLista.length > 1) {
+      filtroLista.forEach((itemRestante) =>
+        deleteTarefa(itemRestante.id, setList)
+      );
+      setButtonDeleteView(false);
+    }
   };
 
   const validaCheckBox = (e: any, item?: IDados) => {
@@ -76,15 +54,25 @@ export function ListaTarefas() {
       }
       return value;
     });
+    mostrarBotaoDeleteTodas(listCheckBox);
     setList(listCheckBox);
   };
 
+  const mostrarBotaoDeleteTodas = (lista: IDados[]) => {
+    const filtroLista = lista.filter((item) => item.checked === true);
+    if (filtroLista.length > 1) {
+      setButtonDeleteView(true);
+    } else {
+      setButtonDeleteView(false);
+    }
+  };
+
   useEffect(() => {
-    getTarefas();
+    getTarefas().then((response) => setList(response));
   }, [db]);
 
   return (
-    <C.Container>
+    <C.Container checked={buttonDeleteView}>
       <C.Area>
         <C.Header>
           <button
@@ -95,6 +83,13 @@ export function ListaTarefas() {
             <img src={voltar} alt="Voltar Home" />
           </button>
           Lista de Tarefas
+          <button
+            hidden={true}
+            className="buttonDeleteTodas"
+            onClick={() => validaDeleteTodas(list)}
+          >
+            Apagar Selecionadas
+          </button>
         </C.Header>
         <AddArea>
           <div className="image">✚</div>
@@ -105,9 +100,10 @@ export function ListaTarefas() {
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
           />
-          <button onClick={() => createTarefa()}>Adicionar</button>
+          <button onClick={() => createTarefa(newName, setList, setNewName)}>
+            Adicionar
+          </button>
         </AddArea>
-        <button onClick={(e) => validaDeleteTodas(list)}>TESTE</button>
         {list.map((item, index) => (
           <ListItemMemoized key={index}>
             <input
