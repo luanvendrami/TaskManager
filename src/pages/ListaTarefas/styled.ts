@@ -1,10 +1,38 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  background-color: #262833;
+type Props = {
+  checked: boolean;
+};
+
+export const Container = styled.div(
+  ({ checked }: Props) => `
+
+ background-color: #262833;
   color: #797a81;
   min-height: 100vh;
-`;
+
+  .buttonDeleteTodas {
+    width: 12.8rem;
+    height: 2.4rem;
+    color: #fff;
+    background: #630003;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    display: ${checked ? "flex" : "none"};
+    align-items: center;
+    margin: -2.4rem 6.3rem;
+    margin-bottom: 1.3rem;
+    font-weight: 600;
+    font-size: 18px;
+    transition: filtro 0.2s;
+    &:hover {
+      cursor: pointer;
+      filter: brightness(0.8);
+    }
+  }
+`
+);
 
 export const Area = styled.div`
   margin: auto;
