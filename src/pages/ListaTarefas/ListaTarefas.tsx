@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AddArea } from "../../components/AddArea";
-import { ListItem, ListItemMemoized } from "../../components/ItemList";
+import { ListItemMemoized } from "../../components/ItemList";
 import { db } from "../../firebase";
 import * as C from "./styled";
 
@@ -16,6 +16,9 @@ import {
   getTarefas,
 } from "../../service/ListaTarefas";
 
+import information from "../../assets/information.svg";
+import { Tooltip } from "../../components/Tooltip";
+
 export function ListaTarefas() {
   const [list, setList] = useState<IDados[]>([]);
   const [newName, setNewName] = useState("");
@@ -24,6 +27,8 @@ export function ListaTarefas() {
     string | number
   >();
   const [buttonDeleteView, setButtonDeleteView] = useState<boolean>(false);
+  const [valueButtonOneDelete, setValueButtonOneDelete] =
+    useState<boolean>(false);
   const navigation = useNavigate();
 
   function handleModalClose() {
@@ -33,6 +38,7 @@ export function ListaTarefas() {
   const validaDelete = () => {
     list.filter((item) => item.id !== valueOnClickButton);
     deleteTarefa(valueOnClickButton, setList);
+    setButtonDeleteView(false);
   };
 
   const validaDeleteTodas = (lista: IDados[]) => {
@@ -43,7 +49,6 @@ export function ListaTarefas() {
       filtroLista.forEach((itemRestante) =>
         deleteTarefa(itemRestante.id, setList)
       );
-      setButtonDeleteView(false);
     }
   };
 
@@ -100,7 +105,12 @@ export function ListaTarefas() {
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
           />
-          <button onClick={() => createTarefa(newName, setList, setNewName)}>
+          <button
+            onClick={() => {
+              createTarefa(newName, setList, setNewName);
+              setButtonDeleteView(false);
+            }}
+          >
             Adicionar
           </button>
         </AddArea>
@@ -113,7 +123,8 @@ export function ListaTarefas() {
               onChange={(e) => validaCheckBox(e, item)}
             />
             <label>{item.name}</label>
-            <C.DivDelete>
+
+            <C.DivDelete checked={item.checked} key={index}>
               <ButtonGrid
                 disabled={false}
                 className="buttonDelete"
@@ -127,6 +138,7 @@ export function ListaTarefas() {
                 Deletar
               </ButtonGrid>
             </C.DivDelete>
+            <Tooltip>teste</Tooltip>
             <IsModal
               isOpen={valueModal}
               onRequestClose={handleModalClose}

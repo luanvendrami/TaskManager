@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import Modal from "react-modal";
 import fechar from "../../assets/x.svg";
 import { Button, Container } from "./styled";
