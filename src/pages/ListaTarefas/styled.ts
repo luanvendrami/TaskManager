@@ -21,7 +21,8 @@ export const Container = styled.div(
     padding: 10px;
     display: ${checked ? "flex" : "none"};
     align-items: center;
-    margin: -2.4rem 6.3rem;
+    top: 1.2rem;
+    margin: -3.7rem 6.3rem;
     margin-bottom: 1.3rem;
     font-weight: 600;
     font-size: 18px;
@@ -71,12 +72,28 @@ export const Header = styled.h1`
   }
 `;
 
-export const DivDelete = styled.div`
-  height: 30px;
+type PropsDivDelete = {
+  checked: boolean;
+};
+
+export const DivDelete = styled.div(
+  ({ checked }: PropsDivDelete) => `
+   height: 30px;
   width: 60px;
+  margin-top: 0.2rem;
   position: absolute;
-  left: 71%;
-`;
+  left: 68%;
+
+
+  .buttonDelete{
+    background: ${checked ? "red" : "#ccc"};
+  }
+
+  .buttonDeleteNone{
+    background: #ccc;
+  }
+`
+);
 
 export const ButtonNavigation = styled.button`
   color: white;
