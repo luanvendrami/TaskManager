@@ -17,18 +17,6 @@ export const Container = styled.div`
   label {
     color: "#CCC";
   }
-
-  .buttonDelete {
-    color: white;
-    background: "#CCC ";
-    border-radius: 0.25rem;
-    border: 0;
-    font-size: 1.3rem;
-    margin-top: auto;
-    font-weight: 400;
-
-    transition: filter 0.2s;
-  }
 `;
 
 export const InputEdit = styled.input`
