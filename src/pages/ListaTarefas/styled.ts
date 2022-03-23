@@ -72,12 +72,12 @@ export const Header = styled.h1`
   }
 `;
 
-type PropsDivDelete = {
+type PropsButtonsGrid = {
   checked: boolean;
 };
 
 export const DivDelete = styled.div(
-  ({ checked }: PropsDivDelete) => `
+  ({ checked }: PropsButtonsGrid) => `
    height: 30px;
   width: 60px;
   margin-top: 0.2rem;
@@ -85,8 +85,55 @@ export const DivDelete = styled.div(
   left: 68%;
 
 
-  .buttonDelete{
+  .button{
+    color: white;
+      background: "#CCC ";
+      border-radius: 0.25rem;
+      border: 0;
+      font-size: 1.3rem;
+      margin-top: auto;
+      font-weight: 400;
+  
+      transition: filter 0.2s;
+
+      &:hover {
+        cursor: ${checked ? "pointer" : "auto"};
+        filter: ${checked ? "brightness(0.9)" : "none"};
+      }
     background: ${checked ? "red" : "#ccc"};
+  }
+
+  .buttonDeleteNone{
+    background: #ccc;
+  }
+`
+);
+
+export const DivEditar = styled.div(
+  ({ checked }: PropsButtonsGrid) => `
+   height: 30px;
+  width: 60px;
+  margin-top: 0.2rem;
+  position: absolute;
+  left: 64%;
+
+
+  .button{
+      color: white;
+      background: "#CCC ";
+      border-radius: 0.25rem;
+      border: 0;
+      font-size: 1.3rem;
+      margin-top: auto;
+      font-weight: 400;
+  
+      transition: filter 0.2s;
+
+      &:hover {
+        cursor: ${checked ? "pointer" : "auto"};
+        filter: ${checked ? "brightness(0.9)" : "none"};
+      }
+    background: ${checked ? "orange" : "#ccc"};
   }
 
   .buttonDeleteNone{
@@ -122,4 +169,20 @@ export const BoxInformacoes = styled.div`
   padding: 6rem;
   position: fixed;
   border-radius: 0.24rem;
+`;
+
+export const ContainerInputDelete = styled.div``;
+
+export const ContainerInputEdit = styled.div``;
+
+export const InputEdit = styled.input`
+  width: 93%;
+  border: 1px solid #555;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  flex: 1;
+  outline: none;
 `;
