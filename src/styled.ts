@@ -33,6 +33,7 @@ h4{
 }
 
 h3{
+    font-size: 0.8  rem;
     &:hover{
     cursor: default;
 }
@@ -63,7 +64,4 @@ transition: filtro 0.2s;
     filter: brightness(0.8);
 }
 }
-
-
-
 }`;

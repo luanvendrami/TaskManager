@@ -21,12 +21,19 @@ export const Container = styled.div`
   }
 `;
 
-export const Button = styled.button`
-  width: 100%;
+type PropsButton = {
+  modalStyle: number | undefined;
+};
+export const Button = styled.button(
+  ({ modalStyle }: PropsButton) =>
+    `
+width: 100%;
   padding: 0 1.5rem;
   height: 4rem;
-  background: "#555fed";
-  color: #ccc;
+  background: ${
+    modalStyle === 0 ? "red" : modalStyle === 1 ? "orange" : "#ccc"
+  };
+  color: #fff;
   border-radius: 0.25rem;
   border: 0;
   font-size: 1rem;
@@ -39,4 +46,5 @@ export const Button = styled.button`
     cursor: pointer;
     filter: brightness(0.9);
   }
-`;
+`
+);
