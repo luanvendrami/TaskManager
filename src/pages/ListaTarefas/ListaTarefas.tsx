@@ -16,7 +16,6 @@ import {
   getTarefas,
 } from "../../service/ListaTarefas";
 
-import information from "../../assets/information.svg";
 import { Tooltip } from "../../components/Tooltip";
 
 export function ListaTarefas() {
@@ -26,9 +25,11 @@ export function ListaTarefas() {
   const [valueOnClickButton, setValueOnClickButton] = useState<
     string | number
   >();
+  const [valueOnClickButtonEdit, setValueOnClickButtonEdit] = useState<
+    string | number
+  >();
+  const [modalStyle, setModalStyle] = useState<number>();
   const [buttonDeleteView, setButtonDeleteView] = useState<boolean>(false);
-  const [valueButtonOneDelete, setValueButtonOneDelete] =
-    useState<boolean>(false);
   const navigation = useNavigate();
 
   function handleModalClose() {
@@ -127,10 +128,11 @@ export function ListaTarefas() {
             <C.DivDelete checked={item.checked} key={index}>
               <ButtonGrid
                 disabled={false}
-                className="buttonDelete"
+                className="button"
                 onClick={() => {
                   if (item.checked) {
                     setValueOnClickButton(item.id);
+                    setModalStyle(0);
                     setValueModal(true!);
                   }
                 }}
@@ -138,15 +140,47 @@ export function ListaTarefas() {
                 Deletar
               </ButtonGrid>
             </C.DivDelete>
+            <C.DivEditar checked={item.checked} key={index}>
+              <ButtonGrid
+                disabled={false}
+                className="button"
+                onClick={() => {
+                  if (item.checked) {
+                    setValueOnClickButtonEdit(item.id);
+                    setModalStyle(1);
+                    setValueModal(true!);
+                    console.log(valueOnClickButtonEdit);
+                  }
+                }}
+              >
+                Editar
+              </ButtonGrid>
+            </C.DivEditar>
             <Tooltip>teste</Tooltip>
             <IsModal
+              modalStyle={modalStyle}
               isOpen={valueModal}
               onRequestClose={handleModalClose}
               functionActions={() => {
                 validaDelete();
                 setValueModal(false);
               }}
-            />
+            >
+              {modalStyle === 0 ? (
+                <C.ContainerInputDelete>
+                  <h3>Exclusão de tarefa</h3>
+                  <h4>Você realmente deseja excluir está tarefa?</h4>
+                </C.ContainerInputDelete>
+              ) : modalStyle === 1 ? (
+                <C.ContainerInputEdit>
+                  <h3>Edição de Tarefa</h3>
+                  <h4>Digite a nova tarefa:</h4>
+                  <C.InputEdit></C.InputEdit>
+                </C.ContainerInputEdit>
+              ) : (
+                "Vazio"
+              )}
+            </IsModal>
           </ListItemMemoized>
         ))}
       </C.Area>
