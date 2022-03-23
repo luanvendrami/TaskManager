@@ -1,17 +1,22 @@
+import { ReactNode } from "react";
 import Modal from "react-modal";
 import fechar from "../../assets/x.svg";
 import { Button, Container } from "./styled";
 
 interface OpenModalProps {
+  modalStyle: number | undefined;
   isOpen: boolean;
   onRequestClose: () => void;
   functionActions: () => void;
+  children: ReactNode;
 }
 
 export function IsModal({
+  modalStyle,
   isOpen,
   onRequestClose,
   functionActions,
+  children,
 }: OpenModalProps) {
   return (
     <Container>
@@ -27,8 +32,12 @@ export function IsModal({
         >
           <img src={fechar} alt="Fechar Modal" />
         </button>
-        <h3>Você deseja deletar está tarefa?</h3>
-        <Button className="buttonStyle" onClick={() => functionActions()}>
+        {children}
+        <Button
+          className="buttonStyle"
+          onClick={() => functionActions()}
+          modalStyle={modalStyle}
+        >
           Confirmar
         </Button>
       </Modal>
