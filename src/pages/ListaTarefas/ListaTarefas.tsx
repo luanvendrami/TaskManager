@@ -14,6 +14,7 @@ import {
   createTarefa,
   deleteTarefa,
   getTarefas,
+  updateTarefa,
 } from "../../service/ListaTarefas";
 
 import { Tooltip } from "../../components/Tooltip";
@@ -21,6 +22,7 @@ import { Tooltip } from "../../components/Tooltip";
 export function ListaTarefas() {
   const [list, setList] = useState<IDados[]>([]);
   const [newName, setNewName] = useState("");
+  const [updateName, setUpdateName] = useState("");
   const [valueModal, setValueModal] = useState(false);
   const [valueOnClickButton, setValueOnClickButton] = useState<
     string | number
@@ -37,9 +39,18 @@ export function ListaTarefas() {
   }
 
   const validaDelete = () => {
-    list.filter((item) => item.id !== valueOnClickButton);
-    deleteTarefa(valueOnClickButton, setList);
-    setButtonDeleteView(false);
+    if (modalStyle === 0) {
+      list.filter((item) => item.id !== valueOnClickButton);
+      deleteTarefa(valueOnClickButton, setList);
+      setButtonDeleteView(false);
+    }
+  };
+
+  const validaUpdate = () => {
+    if (modalStyle === 1) {
+      list.filter((item) => item.id === valueOnClickButtonEdit);
+      updateTarefa(valueOnClickButtonEdit, updateName, setList);
+    }
   };
 
   const validaDeleteTodas = (lista: IDados[]) => {
@@ -163,6 +174,7 @@ export function ListaTarefas() {
               onRequestClose={handleModalClose}
               functionActions={() => {
                 validaDelete();
+                validaUpdate();
                 setValueModal(false);
               }}
             >
@@ -175,7 +187,13 @@ export function ListaTarefas() {
                 <C.ContainerInputEdit>
                   <h3>Edição de Tarefa</h3>
                   <h4>Digite a nova tarefa:</h4>
-                  <C.InputEdit></C.InputEdit>
+                  <C.InputEdit
+                    type="text"
+                    maxLength={85}
+                    placeholder="Digite aqui..."
+                    value={updateName}
+                    onChange={(e) => setUpdateName(e.target.value)}
+                  />
                 </C.ContainerInputEdit>
               ) : (
                 "Vazio"
