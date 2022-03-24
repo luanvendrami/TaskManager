@@ -53,10 +53,14 @@ export const createTarefa = async (
   }
 };
 
-// export const updateTarefa = async (id: any, name: string) => {
-//   const tarefaDoc = doc(db, "tarefas", id);
-//   const newFields = { name: name };
-//   await updateDoc(tarefaDoc, newFields)
-//     .then(() => getTarefas())
-//     .catch((error) => console.log(error));
-// };
+export const updateTarefa = async (
+  id: any,
+  updateName: string,
+  setList: React.Dispatch<React.SetStateAction<IDados[]>>
+) => {
+  const tarefaDoc = doc(db, "tarefas", id);
+  const newFields = { name: updateName };
+  await updateDoc(tarefaDoc, newFields)
+    .then(() => getTarefas().then((response) => setList(response)))
+    .catch((error) => console.log(error));
+};
