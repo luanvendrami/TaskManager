@@ -1,7 +1,7 @@
 export interface IDados {
   id: string | number;
   name: string;
-  done: boolean;
+  status: boolean;
   checked: boolean;
   created_at: string;
 }
