@@ -14,7 +14,8 @@ import {
   createTarefa,
   deleteTarefa,
   getTarefas,
-  updateTarefa,
+  updateTarefaName,
+  updateTarefaStatus,
 } from "../../service/ListaTarefas";
 
 import { Tooltip } from "../../components/Tooltip";
@@ -30,6 +31,8 @@ export function ListaTarefas() {
   const [valueOnClickButtonEdit, setValueOnClickButtonEdit] = useState<
     string | number
   >();
+  const [valueOnClickButtonFinalizar, setValueOnClickButtonFinalizar] =
+    useState<string | number>();
   const [modalStyle, setModalStyle] = useState<number>();
   const [buttonDeleteView, setButtonDeleteView] = useState<boolean>(false);
   const navigation = useNavigate();
@@ -49,7 +52,18 @@ export function ListaTarefas() {
   const validaUpdate = () => {
     if (modalStyle === 1) {
       list.filter((item) => item.id === valueOnClickButtonEdit);
-      updateTarefa(valueOnClickButtonEdit, updateName, setList);
+      if (updateName !== "") {
+        updateTarefaName(valueOnClickButtonEdit, updateName, setList);
+      }
+    }
+  };
+
+  const validaUpdateStatus = () => {
+    if (modalStyle === 2) {
+      list.filter((item) => item.id === valueOnClickButtonFinalizar);
+      if (updateName === "") {
+        updateTarefaStatus(valueOnClickButtonFinalizar, true, setList);
+      }
     }
   };
 
@@ -86,6 +100,7 @@ export function ListaTarefas() {
 
   useEffect(() => {
     getTarefas().then((response) => setList(response));
+    console.log(getTarefas());
   }, [db]);
 
   return (
@@ -130,6 +145,7 @@ export function ListaTarefas() {
           <ListItemMemoized key={index}>
             <input
               type="checkbox"
+              disabled={item.status}
               className="inputPrincipal"
               checked={item.checked}
               onChange={(e) => validaCheckBox(e, item)}
@@ -160,13 +176,28 @@ export function ListaTarefas() {
                     setValueOnClickButtonEdit(item.id);
                     setModalStyle(1);
                     setValueModal(true!);
-                    console.log(valueOnClickButtonEdit);
                   }
                 }}
               >
                 Editar
               </ButtonGrid>
             </C.DivEditar>
+
+            <C.DivFinalizar checked={item.checked} key={index}>
+              <ButtonGrid
+                disabled={false}
+                className="button"
+                onClick={() => {
+                  if (item.checked) {
+                    setValueOnClickButtonFinalizar(item.id);
+                    setModalStyle(2);
+                    setValueModal(true!);
+                  }
+                }}
+              >
+                Finalizar
+              </ButtonGrid>
+            </C.DivFinalizar>
             <Tooltip>teste</Tooltip>
             <IsModal
               modalStyle={modalStyle}
@@ -175,14 +206,15 @@ export function ListaTarefas() {
               functionActions={() => {
                 validaDelete();
                 validaUpdate();
+                validaUpdateStatus();
                 setValueModal(false);
               }}
             >
               {modalStyle === 0 ? (
-                <C.ContainerInputDelete>
+                <C.ContainerInfoDelete>
                   <h3>Exclusão de tarefa</h3>
                   <h4>Você realmente deseja excluir está tarefa?</h4>
-                </C.ContainerInputDelete>
+                </C.ContainerInfoDelete>
               ) : modalStyle === 1 ? (
                 <C.ContainerInputEdit>
                   <h3>Edição de Tarefa</h3>
@@ -195,6 +227,11 @@ export function ListaTarefas() {
                     onChange={(e) => setUpdateName(e.target.value)}
                   />
                 </C.ContainerInputEdit>
+              ) : modalStyle === 2 ? (
+                <C.ContainerInputFinalizar>
+                  <h3>Finalização da Tarefa</h3>
+                  <h4>Confime para finalizar a tarefa:</h4>
+                </C.ContainerInputFinalizar>
               ) : (
                 "Vazio"
               )}
