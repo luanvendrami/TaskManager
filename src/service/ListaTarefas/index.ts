@@ -19,12 +19,9 @@ export const getTarefas = async () => {
   const data = await getDocs(tarefasCollectionRef);
   return data.docs
     .map((doc) => {
-      const [name] = Object.values(doc.data());
       return {
+        ...doc.data(),
         id: doc.id,
-        checked: false,
-        name,
-        done: false,
       } as IDados;
     })
     .sort((a, b) => ("" + a.id).localeCompare(b.id.toString()));
@@ -53,13 +50,25 @@ export const createTarefa = async (
   }
 };
 
-export const updateTarefa = async (
+export const updateTarefaName = async (
   id: any,
   updateName: string,
   setList: React.Dispatch<React.SetStateAction<IDados[]>>
 ) => {
   const tarefaDoc = doc(db, "tarefas", id);
   const newFields = { name: updateName };
+  await updateDoc(tarefaDoc, newFields)
+    .then(() => getTarefas().then((response) => setList(response)))
+    .catch((error) => console.log(error));
+};
+
+export const updateTarefaStatus = async (
+  id: any,
+  updateStatus: boolean,
+  setList: React.Dispatch<React.SetStateAction<IDados[]>>
+) => {
+  const tarefaDoc = doc(db, "tarefas", id);
+  const newFields = { status: updateStatus };
   await updateDoc(tarefaDoc, newFields)
     .then(() => getTarefas().then((response) => setList(response)))
     .catch((error) => console.log(error));
