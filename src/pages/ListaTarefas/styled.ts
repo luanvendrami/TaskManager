@@ -142,6 +142,39 @@ export const DivEditar = styled.div(
 `
 );
 
+export const DivFinalizar = styled.div(
+  ({ checked }: PropsButtonsGrid) => `
+   height: 30px;
+  width: 60px;
+  margin-top: 0.2rem;
+  position: absolute;
+  left: 58.7%;
+
+
+  .button{
+      color: white;
+      background: "#CCC ";
+      border-radius: 0.25rem;
+      border: 0;
+      font-size: 1.3rem;
+      margin-top: auto;
+      font-weight: 400;
+  
+      transition: filter 0.2s;
+
+      &:hover {
+        cursor: ${checked ? "pointer" : "auto"};
+        filter: ${checked ? "brightness(0.9)" : "none"};
+      }
+    background: ${checked ? "yellow" : "#ccc"};
+  }
+
+  .buttonDeleteNone{
+    background: #ccc;
+  }
+`
+);
+
 export const ButtonNavigation = styled.button`
   color: white;
   background: #ccc;
@@ -171,9 +204,11 @@ export const BoxInformacoes = styled.div`
   border-radius: 0.24rem;
 `;
 
-export const ContainerInputDelete = styled.div``;
+export const ContainerInfoDelete = styled.div``;
 
 export const ContainerInputEdit = styled.div``;
+
+export const ContainerInputFinalizar = styled.div``;
 
 export const InputEdit = styled.input`
   width: 93%;
