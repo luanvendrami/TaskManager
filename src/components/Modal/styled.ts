@@ -31,7 +31,13 @@ width: 100%;
   padding: 0 1.5rem;
   height: 4rem;
   background: ${
-    modalStyle === 0 ? "red" : modalStyle === 1 ? "orange" : "#ccc"
+    modalStyle === 0
+      ? "red"
+      : modalStyle === 1
+      ? "orange"
+      : modalStyle === 2
+      ? "yellow"
+      : "#ccc"
   };
   color: #fff;
   border-radius: 0.25rem;
