@@ -4,10 +4,16 @@ import * as C from "./styled";
 
 type Props = {
   children: ReactNode;
+  status: boolean;
+  checked: boolean;
 };
 
-export function ListItem({ children }: Props) {
-  return <C.Container>{children}</C.Container>;
+export function ListItem({ children, status, checked }: Props) {
+  return (
+    <C.Container status={status} checked={checked}>
+      {children}
+    </C.Container>
+  );
 }
 
 export const ListItemMemoized = memo(ListItem);

@@ -1,7 +1,12 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  .tooltip {
+type PropsTooltip = {
+  status: boolean;
+};
+
+export const Container = styled.div(
+  ({ status }: PropsTooltip) => `
+.tooltip {
     position: absolute;
     margin-top: -1.5rem;
     left: 87.5rem;
@@ -14,7 +19,7 @@ export const Container = styled.div`
       opacity: 0;
       background: white;
       transition: all 0.25s cubic-bezier(0, 0, 0.2, 1);
-      color: #484848;
+      color: ${status ? "red" : "#484848"};
       border: 1px solid #cecece;
       border-radius: 3px;
       font-weight: 500;
@@ -58,7 +63,7 @@ export const Container = styled.div`
         }
       }
     }
-
+    
     &[data-direction="bottom"] {
       .tooltip__initiator:hover ~ .tooltip__item {
         transform: translate3d(-50%, 0, 0);
@@ -76,7 +81,8 @@ export const Container = styled.div`
           left: 50%;
           transform: translate3d(-50%, 0, 0);
           border-width: 0 0.5em 0.5em 0.5em;
-          border-color: transparent transparent white transparent;
+          border-color: transparent transparent white
+          }; transparent;
           -webkit-filter: drop-shadow(1px 2px 1px #bcbcbc);
           filter: drop-shadow(1px -1px 1px #bcbcbc);
         }
@@ -107,4 +113,5 @@ export const Container = styled.div`
     align-items: center;
     justify-content: space-around;
   }
-`;
+`
+);

@@ -109,8 +109,13 @@ export const DivDelete = styled.div(
 `
 );
 
+type PropsButtonsGridEdit = {
+  checked: boolean;
+  status: boolean;
+};
+
 export const DivEditar = styled.div(
-  ({ checked }: PropsButtonsGrid) => `
+  ({ checked, status }: PropsButtonsGridEdit) => `
    height: 30px;
   width: 60px;
   margin-top: 0.2rem;
@@ -130,10 +135,10 @@ export const DivEditar = styled.div(
       transition: filter 0.2s;
 
       &:hover {
-        cursor: ${checked ? "pointer" : "auto"};
-        filter: ${checked ? "brightness(0.9)" : "none"};
+        cursor: ${status ? "auto" : checked ? "pointer" : "auto"};
+        filter: ${status ? "auto" : checked ? "brightness(0.9)" : "none"};
       }
-    background: ${checked ? "orange" : "#ccc"};
+    background: ${status ? "#CCC" : checked ? "orange" : "#CCC"};
   }
 
   .buttonDeleteNone{
@@ -142,8 +147,13 @@ export const DivEditar = styled.div(
 `
 );
 
+type PropsButtonsGridDelete = {
+  checked: boolean;
+  status: boolean;
+};
+
 export const DivFinalizar = styled.div(
-  ({ checked }: PropsButtonsGrid) => `
+  ({ checked, status }: PropsButtonsGridDelete) => `
    height: 30px;
   width: 60px;
   margin-top: 0.2rem;
@@ -163,10 +173,10 @@ export const DivFinalizar = styled.div(
       transition: filter 0.2s;
 
       &:hover {
-        cursor: ${checked ? "pointer" : "auto"};
-        filter: ${checked ? "brightness(0.9)" : "none"};
+        cursor: ${status ? "auto" : checked ? "pointer" : "auto"};
+        filter: ${status ? "auto" : checked ? "brightness(0.9)" : "none"};
       }
-    background: ${checked ? "yellow" : "#ccc"};
+    background: ${status ? "#CCC" : checked ? "yellow" : "#ccc"};
   }
 
   .buttonDeleteNone{
@@ -190,18 +200,6 @@ export const ButtonNavigation = styled.button`
     cursor: pointer;
     filter: brightness(0.9);
   }
-`;
-
-export const BoxInformacoes = styled.div`
-  width: 100%;
-  margin-left: 2rem;
-  bottom: 60%;
-  max-width: 160px;
-  background: #20212c;
-  box-shadow: 0px 0px 25px #20212c;
-  padding: 6rem;
-  position: fixed;
-  border-radius: 0.24rem;
 `;
 
 export const ContainerInfoDelete = styled.div``;

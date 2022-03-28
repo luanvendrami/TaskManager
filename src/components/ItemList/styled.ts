@@ -1,8 +1,15 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+type PropsBorderStatus = {
+  status: boolean;
+  checked: boolean;
+};
+
+export const Container = styled.div(
+  ({ status, checked }: PropsBorderStatus) => `
   display: flex;
   background-color: #20212c;
+  border: 1px solid ${checked ? (status ? "red" : "none") : "none"};
   padding: 10px;
   border-radius: 10px;
   margin-bottom: 10px;
@@ -16,43 +23,6 @@ export const Container = styled.div`
 
   label {
     color: "#CCC";
-  }
-`;
-
-export const InputEdit = styled.input`
-  width: 93%;
-  border: 1px solid #555;
-  border-radius: 5px;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  font-size: 18px;
-  flex: 1;
-  outline: none;
-`;
-
-type EditButtonProps = {
-  edit: number;
-};
-
-export const Button = styled.button(
-  ({ edit }: EditButtonProps) => `
-  width: 100%;
-  padding: 0 1.5rem;
-  height: 4rem;
-  background: ${edit === 0 ? "green" : edit === 1 ? "red" : "#555fed"};
-  color: #ccc;
-  border-radius: 0.25rem;
-  border: 0;
-  font-size: 1rem;
-  margin-top: 1.5rem;
-  font-weight: 600;
-
-  transition: filter 0.2s;
-
-  &:hover {
-    cursor: pointer;
-    filter: brightness(0.9);
   }
 `
 );

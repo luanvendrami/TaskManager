@@ -4,11 +4,12 @@ import { Container } from "./styled";
 
 type PropsTooltip = {
   children: ReactNode;
+  status: boolean;
 };
 
-export function Tooltip({ children }: PropsTooltip) {
+export function Tooltip({ children, status }: PropsTooltip) {
   return (
-    <Container>
+    <Container status={status}>
       <div className="tooltip" data-direction="bottom">
         <div className="tooltip__initiator">
           <img src={information} alt="Informações" />

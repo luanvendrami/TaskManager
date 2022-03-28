@@ -142,10 +142,13 @@ export function ListaTarefas() {
           </button>
         </AddArea>
         {list.map((item, index) => (
-          <ListItemMemoized key={index}>
+          <ListItemMemoized
+            key={index}
+            status={item.status}
+            checked={item.checked}
+          >
             <input
               type="checkbox"
-              disabled={item.status}
               className="inputPrincipal"
               checked={item.checked}
               onChange={(e) => validaCheckBox(e, item)}
@@ -167,9 +170,13 @@ export function ListaTarefas() {
                 Deletar
               </ButtonGrid>
             </C.DivDelete>
-            <C.DivEditar checked={item.checked} key={index}>
+            <C.DivEditar
+              checked={item.checked}
+              key={index}
+              status={item.status}
+            >
               <ButtonGrid
-                disabled={false}
+                disabled={item.status}
                 className="button"
                 onClick={() => {
                   if (item.checked) {
@@ -183,9 +190,13 @@ export function ListaTarefas() {
               </ButtonGrid>
             </C.DivEditar>
 
-            <C.DivFinalizar checked={item.checked} key={index}>
+            <C.DivFinalizar
+              checked={item.checked}
+              key={index}
+              status={item.status}
+            >
               <ButtonGrid
-                disabled={false}
+                disabled={item.status}
                 className="button"
                 onClick={() => {
                   if (item.checked) {
@@ -198,7 +209,9 @@ export function ListaTarefas() {
                 Finalizar
               </ButtonGrid>
             </C.DivFinalizar>
-            <Tooltip>teste</Tooltip>
+            <Tooltip status={item.status}>
+              {item.status ? "Esta tarefa foi finalizada!" : "Em Andamento"}
+            </Tooltip>
             <IsModal
               modalStyle={modalStyle}
               isOpen={valueModal}
