@@ -208,6 +208,8 @@ export const ContainerInputEdit = styled.div``;
 
 export const ContainerInputFinalizar = styled.div``;
 
+export const ContainerInputMaxTarefas = styled.div``;
+
 export const InputEdit = styled.input`
   width: 93%;
   border: 1px solid #555;
@@ -218,4 +220,83 @@ export const InputEdit = styled.input`
   font-size: 18px;
   flex: 1;
   outline: none;
+`;
+
+export const IconStatusTarefa = styled.div`
+  height: 30px;
+  width: 60px;
+  margin-top: 0.4rem;
+  position: absolute;
+  left: 73%;
+
+  .gg-close-o {
+    box-sizing: border-box;
+    position: absolute;
+    display: block;
+    transform: scale(var(--ggs, 1));
+    width: 22px;
+    height: 22px;
+    border: 2px solid;
+    border-radius: 40px;
+  }
+
+  .gg-close-o::after,
+  .gg-close-o::before {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    width: 12px;
+    height: 2px;
+    background: currentColor;
+    transform: rotate(45deg);
+    border-radius: 5px;
+    top: 8px;
+    left: 3px;
+  }
+
+  .gg-close-o::after {
+    transform: rotate(-45deg);
+  }
+
+  @keyframes spinner-two {
+    0% {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
+
+  .gg-spinner-two {
+    transform: scale(var(--ggs, 1));
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    width: 20px;
+    height: 20px;
+  }
+
+  .gg-spinner-two::after,
+  .gg-spinner-two::before {
+    box-sizing: border-box;
+    display: block;
+    width: 20px;
+    height: 20px;
+    content: "";
+    position: absolute;
+    border-radius: 100px;
+  }
+
+  .gg-spinner-two::before {
+    animation: spinner-two 1s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+    border: 3px solid transparent;
+    border-bottom-color: currentColor;
+    border-top-color: currentColor;
+  }
+
+  .gg-spinner-two::after {
+    border: 3px solid;
+    opacity: 0.2;
+  }
 `;
