@@ -18,8 +18,6 @@ import {
   updateTarefaStatus,
 } from "../../service/ListaTarefas";
 
-import { Tooltip } from "../../components/Tooltip";
-
 export function ListaTarefas() {
   const [list, setList] = useState<IDados[]>([]);
   const [newName, setNewName] = useState("");
@@ -134,8 +132,14 @@ export function ListaTarefas() {
           />
           <button
             onClick={() => {
-              createTarefa(newName, setList, setNewName);
-              setButtonDeleteView(false);
+              if (list.length < 10) {
+                createTarefa(newName, setList, setNewName);
+                setButtonDeleteView(false);
+              } else {
+                console.log("Entru");
+                setModalStyle(3);
+                setValueModal(true!);
+              }
             }}
           >
             Adicionar
@@ -209,9 +213,9 @@ export function ListaTarefas() {
                 Finalizar
               </ButtonGrid>
             </C.DivFinalizar>
-            <Tooltip status={item.status}>
-              {item.status ? "Esta tarefa foi finalizada!" : "Em Andamento"}
-            </Tooltip>
+            <C.IconStatusTarefa>
+              <i className={item.status ? "gg-close-o" : "gg-spinner-two"}></i>
+            </C.IconStatusTarefa>
             <IsModal
               modalStyle={modalStyle}
               isOpen={valueModal}
@@ -245,8 +249,16 @@ export function ListaTarefas() {
                   <h3>Finalização da Tarefa</h3>
                   <h4>Confime para finalizar a tarefa:</h4>
                 </C.ContainerInputFinalizar>
+              ) : modalStyle === 3 ? (
+                <C.ContainerInputMaxTarefas>
+                  <h3>ATENÇÃO!</h3>
+                  <h4>Sua lista só pode conter 10(Dez) tarefas.</h4>
+                  <h4>
+                    Por favor, exclua alguma para poder criar novas tarefas!
+                  </h4>
+                </C.ContainerInputMaxTarefas>
               ) : (
-                "Vazio"
+                "Vazrio"
               )}
             </IsModal>
           </ListItemMemoized>
